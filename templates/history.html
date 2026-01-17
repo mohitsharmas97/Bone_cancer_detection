@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}History - Bone Cancer Detection{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="history-header">
+        <h2>Prediction History</h2>
+        <p>View all your previous analyses</p>
+    </div>
+
+    {% if predictions %}
+    <div class="history-grid">
+        {% for prediction in predictions %}
+        <div class="history-card">
+            <div class="history-image">
+                <img src="{{ url_for('static', filename='uploads/original/' + prediction.original_image_path.split('\\')[-1].split('/')[-1]) }}"
+                    alt="X-Ray">
+            </div>
+            <div class="history-content">
+                <div
+                    class="history-status {% if prediction.prediction_class == 'cancer' %}status-cancer{% else %}status-normal{% endif %}">
+                    {{ prediction.prediction_class.upper() }}
+                </div>
+                <p class="history-confidence">
+                    Confidence: {{ "%.2f"|format((prediction.confidence_cancer if prediction.prediction_class ==
+                    'cancer' else prediction.confidence_normal) * 100) }}%
+                </p>
+                <p class="history-date">{{ prediction.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                <div class="history-actions">
+                    <a href="{{ url_for('predict.results', prediction_id=prediction.id) }}"
+                        class="btn btn-small">View</a>
+                    {% if prediction.report_path %}
+                    <a href="{{ url_for('reports.download', prediction_id=prediction.id) }}"
+                        class="btn btn-small">Download PDF</a>
+                    {% else %}
+                    <a href="{{ url_for('reports.generate', prediction_id=prediction.id) }}"
+                        class="btn btn-small">Generate PDF</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+            </path>
+        </svg>
+        <h3>No Predictions Yet</h3>
+        <p>Upload your first X-ray image to get started</p>
+        <a href="{{ url_for('predict.dashboard') }}" class="btn btn-primary">Upload Image</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

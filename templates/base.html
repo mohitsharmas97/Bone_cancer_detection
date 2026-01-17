@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bone Cancer Detection{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🦴 Bone Cancer Detection</h1>
+            </div>
+            <div class="nav-links">
+                {% if session.get('user_id') %}
+                    <span class="user-info">Welcome, {{ session.get('username') }}</span>
+                    <a href="{{ url_for('predict.dashboard') }}" class="nav-link">Dashboard</a>
+                    <a href="{{ url_for('predict.history') }}" class="nav-link">History</a>
+                    <a href="{{ url_for('auth.logout') }}" class="nav-link btn-logout">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="nav-link">Login</a>
+                    <a href="{{ url_for('auth.register') }}" class="nav-link">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Bone Cancer Detection System | AI-Powered Medical Imaging</p>
+            <p class="disclaimer">⚠ For research and screening purposes only. Consult a medical professional for diagnosis.</p>
+        </div>
+    </footer>
+</body>
+</html>

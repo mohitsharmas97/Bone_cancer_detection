@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Flask
+instance/
+.env
+*.db
+
+# Uploads
+static/uploads/original/*
+static/uploads/heatmaps/*
+static/uploads/reports/*
+
+# Keep folders
+!static/uploads/original/.gitkeep
+!static/uploads/heatmaps/.gitkeep
+!static/uploads/reports/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model (keep best.pt, ignore others)
+runs/
+*.pt
+!best.pt
+
+# Jupyter
+.ipynb_checkpoints/

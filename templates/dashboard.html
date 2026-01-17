@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Bone Cancer Detection{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="dashboard-header">
+        <h2>Upload X-Ray Image</h2>
+        <p>Upload a bone X-ray image for cancer detection analysis</p>
+    </div>
+
+    <div class="upload-container">
+        <form method="POST" action="{{ url_for('predict.upload') }}" enctype="multipart/form-data" class="upload-form">
+            <div class="upload-area" id="uploadArea">
+                <input type="file" id="fileInput" name="file" accept=".png,.jpg,.jpeg" required hidden>
+                <div class="upload-content">
+                    <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                        </path>
+                    </svg>
+                    <p class="upload-text">Click to upload or drag and drop</p>
+                    <p class="upload-hint">PNG, JPG or JPEG (MAX. 16MB)</p>
+                </div>
+                <div class="preview-container" id="previewContainer" style="display: none;">
+                    <img id="previewImage" src="" alt="Preview">
+                    <button type="button" class="btn-remove" id="removeBtn">Remove</button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" id="submitBtn" disabled>
+                Analyze X-Ray
+            </button>
+        </form>
+    </div>
+
+    <div class="info-section">
+        <h3>How It Works</h3>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-number">1</div>
+                <h4>Upload Image</h4>
+                <p>Upload a bone X-ray image in PNG, JPG, or JPEG format</p>
+            </div>
+            <div class="info-card">
+                <div class="info-number">2</div>
+                <h4>AI Analysis</h4>
+                <p>Our YOLO model analyzes the image with ~97% accuracy</p>
+            </div>
+            <div class="info-card">
+                <div class="info-number">3</div>
+                <h4>View Results</h4>
+                <p>Get classification, confidence scores, and GradCAM heatmap</p>
+            </div>
+            <div class="info-card">
+                <div class="info-number">4</div>
+                <h4>Download Report</h4>
+                <p>Generate and download a comprehensive PDF report</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const previewContainer = document.getElementById('previewContainer');
+    const previewImage = document.getElementById('previewImage');
+    const removeBtn = document.getElementById('removeBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const uploadContent = document.querySelector('.upload-content');
+
+    // Click to upload
+    uploadArea.addEventListener('click', (e) => {
+        if (e.target !== removeBtn && !removeBtn.contains(e.target)) {
+            fileInput.click();
+        }
+    });
+
+    // File selection
+    fileInput.addEventListener('change', handleFile);
+
+    // Drag and drop
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('drag-over');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('drag-over');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('drag-over');
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            handleFile();
+        }
+    });
+
+    function handleFile() {
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImage.src = e.target.result;
+                uploadContent.style.display = 'none';
+                previewContainer.style.display = 'block';
+                submitBtn.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Remove file
+    removeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fileInput.value = '';
+        previewImage.src = '';
+        uploadContent.style.display = 'block';
+        previewContainer.style.display = 'none';
+        submitBtn.disabled = true;
+    });
+</script>
+{% endblock %}
