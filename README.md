@@ -207,5 +207,3 @@ For issues, questions, or contributions, please refer to the project documentati
 - [ ] Cloud deployment guide
 
 ---
-
-**Built for advancing medical AI research**
