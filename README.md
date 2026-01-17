@@ -1,6 +1,10 @@
 # Bone Cancer Detection System
 
 An AI-powered web application for bone cancer detection using YOLOv8 classification, GradCAM visualization, and automated PDF report generation.
+<img width="1911" height="932" alt="image" src="https://github.com/user-attachments/assets/0c6b6310-f77a-4aad-ac05-ab0d1b2f1e41" />
+<img width="1817" height="939" alt="image" src="https://github.com/user-attachments/assets/b5d54386-02b8-4c86-94c3-9dfe4de1c909" />
+<img width="940" height="877" alt="image" src="https://github.com/user-attachments/assets/f9428b69-da1a-4edc-a542-67ad34cffe7a" />
+
 
 ## Features
 
