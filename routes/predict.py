@@ -102,9 +102,9 @@ def results(prediction_id):
         flash('Unauthorized access', 'error')
         return redirect(url_for('predict.dashboard'))
     
-    # Get relative paths for templates
-    original_rel = os.path.join('uploads', 'original', os.path.basename(prediction.original_image_path))
-    heatmap_rel = os.path.join('uploads', 'heatmaps', os.path.basename(prediction.heatmap_image_path))
+    # Get relative paths for templates (use forward slashes for URLs)
+    original_rel = 'uploads/original/' + os.path.basename(prediction.original_image_path)
+    heatmap_rel = 'uploads/heatmaps/' + os.path.basename(prediction.heatmap_image_path)
     
     return render_template('results.html', 
                          prediction=prediction,

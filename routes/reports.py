@@ -1,4 +1,4 @@
-from flask import Blueprint, send_file, flash, redirect, url_for, session, current_app
+from flask import Blueprint, send_file, flash, redirect, url_for, session, current_app, make_response
 from models import db, Prediction, User
 from routes.auth import login_required
 from utils.pdf_generator import generate_pdf_report
@@ -6,6 +6,18 @@ import os
 from datetime import datetime
 
 reports_bp = Blueprint('reports', __name__)
+
+
+def send_pdf_file(file_path, filename):
+    """Send PDF file with proper headers for browser download"""
+    with open(file_path, 'rb') as f:
+        pdf_data = f.read()
+    
+    response = make_response(pdf_data)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = f'attachment; filename="{filename}"'
+    response.headers['Content-Length'] = len(pdf_data)
+    return response
 
 
 @reports_bp.route('/generate/<int:prediction_id>')
@@ -22,7 +34,10 @@ def generate(prediction_id):
     try:
         # Check if report already exists
         if prediction.report_path and os.path.exists(prediction.report_path):
-            return send_file(prediction.report_path, as_attachment=True)
+            return send_pdf_file(
+                prediction.report_path,
+                f"bone_cancer_report_{prediction.id}.pdf"
+            )
         
         # Generate new report
         user = User.query.get(session['user_id'])
@@ -55,7 +70,10 @@ def generate(prediction_id):
         db.session.commit()
         
         flash('PDF report generated successfully!', 'success')
-        return send_file(report_path, as_attachment=True, download_name=f"bone_cancer_report_{prediction.id}.pdf")
+        return send_pdf_file(
+            report_path,
+            f"bone_cancer_report_{prediction.id}.pdf"
+        )
         
     except Exception as e:
         flash(f'Error generating report: {str(e)}', 'error')
@@ -77,4 +95,7 @@ def download(prediction_id):
         flash('Report not found. Please generate it first.', 'error')
         return redirect(url_for('predict.results', prediction_id=prediction_id))
     
-    return send_file(prediction.report_path, as_attachment=True, download_name=f"bone_cancer_report_{prediction.id}.pdf")
+    return send_pdf_file(
+        prediction.report_path,
+        f"bone_cancer_report_{prediction.id}.pdf"
+    )
