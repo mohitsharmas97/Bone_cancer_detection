@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered bone cancer detection system using YOLO and GradCAM visualization">
     <title>{% block title %}Bone Cancer Detection{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z'/%3E%3C/svg%3E">
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
-                <h1>🦴 Bone Cancer Detection</h1>
+                <h1>Bone Cancer Detection</h1>
             </div>
             <div class="nav-links">
                 {% if session.get('user_id') %}
-                    <span class="user-info">Welcome, {{ session.get('username') }}</span>
-                    <a href="{{ url_for('predict.dashboard') }}" class="nav-link">Dashboard</a>
-                    <a href="{{ url_for('predict.history') }}" class="nav-link">History</a>
-                    <a href="{{ url_for('auth.logout') }}" class="nav-link btn-logout">Logout</a>
+                <span class="user-info">{{ session.get('username') }}</span>
+                <a href="{{ url_for('predict.dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('predict.history') }}" class="nav-link">History</a>
+                <a href="{{ url_for('auth.logout') }}" class="nav-link btn-logout">Logout</a>
                 {% else %}
-                    <a href="{{ url_for('auth.login') }}" class="nav-link">Login</a>
-                    <a href="{{ url_for('auth.register') }}" class="nav-link">Register</a>
+                <a href="{{ url_for('auth.login') }}" class="nav-link">Login</a>
+                <a href="{{ url_for('auth.register') }}" class="nav-link">Register</a>
                 {% endif %}
             </div>
         </div>
@@ -29,15 +34,15 @@
 
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="container">
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
+    {% if messages %}
+    <div class="container">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     {% endwith %}
 
     <!-- Main Content -->
@@ -49,8 +54,10 @@
     <footer class="footer">
         <div class="container">
             <p>&copy; 2026 Bone Cancer Detection System | AI-Powered Medical Imaging</p>
-            <p class="disclaimer">⚠ For research and screening purposes only. Consult a medical professional for diagnosis.</p>
+            <p class="disclaimer">For research and screening purposes only. Consult a medical professional for
+                diagnosis.</p>
         </div>
     </footer>
 </body>
+
 </html>

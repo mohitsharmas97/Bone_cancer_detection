@@ -1,8 +1,8 @@
-# 🦴 Bone Cancer Detection System
+# Bone Cancer Detection System
 
 An AI-powered web application for bone cancer detection using YOLOv8 classification, GradCAM visualization, and automated PDF report generation.
 
-## 📋 Features
+## Features
 
 - **User Authentication**: Secure registration and login system
 - **X-Ray Image Upload**: Support for PNG, JPG, and JPEG formats
@@ -13,7 +13,7 @@ An AI-powered web application for bone cancer detection using YOLOv8 classificat
 - **Prediction History**: Track all previous analyses
 - **Responsive Design**: Modern, mobile-friendly interface
 
-## 🚀 Installation
+## Installation
 
 ### Prerequisites
 
@@ -58,7 +58,7 @@ An AI-powered web application for bone cancer detection using YOLOv8 classificat
    - The fine-tuned YOLOv8 model (`best.pt`) should be in the root directory
    - Model was trained on bone cancer dataset with ~97% validation accuracy
 
-## 🎯 Usage
+## Usage
 
 1. **Start the Flask application**
    ```bash
@@ -80,7 +80,7 @@ An AI-powered web application for bone cancer detection using YOLOv8 classificat
    - View results, confidence scores, and GradCAM heatmap
    - Generate and download PDF report
 
-## 📊 System Architecture
+## System Architecture
 
 ```
 bone_cancer_detection/
@@ -116,7 +116,7 @@ bone_cancer_detection/
     └── database.db         # SQLite database
 ```
 
-## 🧠 Model Information
+## Model Information
 
 - **Architecture**: YOLOv8 Nano Classification (yolov8n-cls)
 - **Training Dataset**: Bone cancer detection dataset from Roboflow
@@ -127,7 +127,7 @@ bone_cancer_detection/
 - **Classes**: 2 (Cancer, Normal)
 - **Input Size**: 224x224 pixels
 
-## 🔬 Technology Stack
+## Technology Stack
 
 **Backend:**
 - Flask (Python web framework)
@@ -151,10 +151,10 @@ bone_cancer_detection/
 
 **Frontend:**
 - HTML5
-- CSS3 (Modern gradients, animations)
+- CSS3 (Modern gradients, glassmorphism, animations)
 - Vanilla JavaScript
 
-## ⚠️ Important Disclaimers
+## Important Disclaimers
 
 **Medical Disclaimer:**
 - This system is for **research and screening purposes only**
@@ -168,7 +168,7 @@ bone_cancer_detection/
 - Implement proper data encryption and access controls for production use
 - Comply with HIPAA, GDPR, and other relevant regulations
 
-## 🛠️ Development
+## Development
 
 ### Running in Development Mode
 
@@ -184,15 +184,15 @@ python app.py
 # To reset the database, delete instance/database.db
 ```
 
-## 📝 License
+## License
 
 This project is for educational and research purposes.
 
-## 👥 Support
+## Support
 
 For issues, questions, or contributions, please refer to the project documentation.
 
-## 🔄 Future Enhancements
+## Future Enhancements
 
 - [ ] Multi-model ensemble for improved accuracy
 - [ ] DICOM format support
@@ -204,4 +204,4 @@ For issues, questions, or contributions, please refer to the project documentati
 
 ---
 
-**Built with ❤️ for advancing medical AI research**
+**Built for advancing medical AI research**

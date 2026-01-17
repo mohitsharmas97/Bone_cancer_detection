@@ -1,23 +1,50 @@
-from flask import Blueprint, send_file, flash, redirect, url_for, session, current_app, make_response
+from flask import Blueprint, send_file, flash, redirect, url_for, session, current_app, Response
 from models import db, Prediction, User
 from routes.auth import login_required
 from utils.pdf_generator import generate_pdf_report
 import os
 from datetime import datetime
+import io
 
 reports_bp = Blueprint('reports', __name__)
 
 
 def send_pdf_file(file_path, filename):
     """Send PDF file with proper headers for browser download"""
-    with open(file_path, 'rb') as f:
-        pdf_data = f.read()
-    
-    response = make_response(pdf_data)
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'attachment; filename="{filename}"'
-    response.headers['Content-Length'] = len(pdf_data)
-    return response
+    try:
+        # Read the PDF file
+        with open(file_path, 'rb') as f:
+            pdf_data = f.read()
+        
+        # Create a BytesIO object from the PDF data
+        pdf_io = io.BytesIO(pdf_data)
+        pdf_io.seek(0)
+        
+        # Use send_file with proper parameters for reliable PDF downloads
+        return send_file(
+            pdf_io,
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name=filename  # This ensures proper filename with .pdf extension
+        )
+    except Exception as e:
+        # Fallback to Response if send_file fails
+        with open(file_path, 'rb') as f:
+            pdf_data = f.read()
+        
+        response = Response(
+            pdf_data,
+            mimetype='application/pdf',
+            headers={
+                'Content-Disposition': f'attachment; filename="{filename}"',
+                'Content-Type': 'application/pdf',
+                'Content-Length': str(len(pdf_data)),
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        )
+        return response
 
 
 @reports_bp.route('/generate/<int:prediction_id>')
